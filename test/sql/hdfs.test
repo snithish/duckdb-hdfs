@@ -1,0 +1,23 @@
+# name: test/sql/hdfs.test
+# description: test hdfs extension
+# group: [hdfs]
+
+# Before we load the extension, this will fail
+statement error
+SELECT hdfs('Sam');
+----
+Catalog Error: Scalar Function with name hdfs does not exist!
+
+# Require statement will ensure this test is run with this extension loaded
+require hdfs
+
+# Confirm the extension works
+query I
+SELECT hdfs('Sam');
+----
+Hdfs Sam 🐥
+
+query I
+SELECT hdfs_openssl_version('Michael');
+----
+<REGEX>:Hdfs Michael, my linked OpenSSL version is OpenSSL.*

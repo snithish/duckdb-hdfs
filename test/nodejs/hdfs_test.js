@@ -1,7 +1,7 @@
 var duckdb = require('../../duckdb/tools/nodejs');
 var assert = require('assert');
 
-describe(`quack extension`, () => {
+describe(`hdfs extension`, () => {
     let db;
     let conn;
     before((done) => {
@@ -13,18 +13,18 @@ describe(`quack extension`, () => {
         });
     });
 
-    it('quack function should return expected string', function (done) {
-        db.all("SELECT quack('Sam') as value;", function (err, res) {
+    it('hdfs function should return expected string', function (done) {
+        db.all("SELECT hdfs('Sam') as value;", function (err, res) {
             if (err) throw err;
-            assert.deepEqual(res, [{value: "Quack Sam 🐥"}]);
+            assert.deepEqual(res, [{value: "Hdfs Sam 🐥"}]);
             done();
         });
     });
 
-    it('quack_openssl_version function should return expected string', function (done) {
-        db.all("SELECT quack_openssl_version('Michael') as value;", function (err, res) {
+    it('hdfs_openssl_version function should return expected string', function (done) {
+        db.all("SELECT hdfs_openssl_version('Michael') as value;", function (err, res) {
             if (err) throw err;
-            assert(res[0].value.startsWith('Quack Michael, my linked OpenSSL version is OpenSSL'));
+            assert(res[0].value.startsWith('Hdfs Michael, my linked OpenSSL version is OpenSSL'));
             done();
         });
     });
