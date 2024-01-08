@@ -8,6 +8,9 @@
 #include <duckdb/parser/parsed_data/create_scalar_function_info.hpp>
 
 #include <curl/curl.h>
+#include <hdfsfs.hpp>
+
+using namespace std;
 
 namespace duckdb {
 
@@ -102,6 +105,22 @@ inline void HdfsCurlScalarFun(DataChunk &args, ExpressionState &state,
 
 static void LoadInternal(DatabaseInstance &instance) {
   // Register a scalar function
+  auto &fs = instance.GetFileSystem();
+
+  fs.RegisterSubSystem(make_uniq<HDFSFileSystem>());
+
+  auto &config = DBConfig::GetConfig(instance);
+
+  config.AddExtensionOption(
+      "hdfs_namenode_url",
+      "Name Node URL of HDFS including port. eg. localhost:14000",
+      LogicalType::VARCHAR, Value("localhost:14000"));
+  config.AddExtensionOption(
+      "hdfs_proxy",
+      "Proxy Endpoint to use for proxing Web HDFS requests, use Curl proxy "
+      "format include appropriate proxy schema. eg. socks5h://127.0.0.1:28081",
+      LogicalType::VARCHAR, Value("socks5h://127.0.0.1:28081"));
+
   auto hdfs_scalar_function = ScalarFunction(
       "hdfs", {LogicalType::VARCHAR}, LogicalType::VARCHAR, HdfsScalarFun);
   ExtensionUtil::RegisterFunction(instance, hdfs_scalar_function);

@@ -9,6 +9,7 @@ set(TARGET_NAME hdfs)
 # from vcpkg.json to prevent needlessly installing it..
 find_package(curl REQUIRED)
 
+add_subdirectory(test)
 set(EXTENSION_NAME ${TARGET_NAME}_extension)
 set(LOADABLE_EXTENSION_NAME ${TARGET_NAME}_loadable_extension)
 
@@ -24,7 +25,7 @@ target_link_libraries(${EXTENSION_NAME} curl)
 target_link_libraries(${LOADABLE_EXTENSION_NAME} curl)
 
 install(
-  TARGETS ${EXTENSION_NAME}
-  EXPORT "${DUCKDB_EXPORT_SET}"
-  LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
-  ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
+        TARGETS ${EXTENSION_NAME}
+        EXPORT "${DUCKDB_EXPORT_SET}"
+        LIBRARY DESTINATION "${INSTALL_LIB_DIR}"
+        ARCHIVE DESTINATION "${INSTALL_LIB_DIR}")
